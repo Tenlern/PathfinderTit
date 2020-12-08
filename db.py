@@ -15,19 +15,19 @@ def get_path(**params):
     return res
 
 
-def get_paths(params):
-    res = []
-    for doc in paths.find(params):
-        res.append(doc)
+# Находим список соседних узлов по существующим ребрам в базе данных
+# Возвращает словарь с сосед - расстояние
+def get_neighbors(node: str):
+    res = {}
+    for path in paths.find({'from': node}):
+        res.setdefault(path['to'], path['duration'])
     return res
 
 
-def get_neighbors(node: str):
-    res = {}
-    for path in paths.find({
-        'from': node
-    }):
-        res.setdefault(path['to'], path['duration'])
+# Находим расстояния до всех узлов для оценки оптимального пути по алгоритму A*
+def get_heuristics(start: str, end: str):
+    data = heuristics_data.find_one({'name': start})
+    return data['heuristics'][end]
 
 
 

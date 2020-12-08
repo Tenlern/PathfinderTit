@@ -23,7 +23,7 @@ class Graph:
         if not self.directed:
             self.graph_dict.setdefault(B, {})[A] = distance
 
-    # Метод нахождения соседей вершины или дистанции до конкретного соседа
+    # Метод нахождения соседих вершин или дистанции до конкретного соседа
     def get(self, a, b=None):
         links = self.graph_dict.setdefault(a, {})
         if b is None:
@@ -73,7 +73,7 @@ class Node:
         self.h: int = 0
 
     def __eq__(self, other):
-        self.name = other.name
+        return self.name == other.name
 
     def __lt__(self, other):
         return self.f < other.f
@@ -81,6 +81,71 @@ class Node:
 
 # Ленивый A*
 def astar_search(graph, heuristics, start, end):
+    # Создаем списки открытых и закрытых вершин
+    open = []
+    closed = []
+    # Создаем вершины начала и конца маршрута
+    start_node = Node(start, None)
+    goal_node = Node(end, None)
+    # Добавляем в открытый список стартовый узел
+    open.append(start_node)
+    # Проходимся по очереди в открытом списке
+    print('Start searching')
+    while len(open) > 0:
+        print('Queue')
+        # Сортируем список по самой низкой стоимости
+        open.sort()
+        # Забираем из очереди самый дешевый
+        current_node = open.pop(0)
+        # Добавляем пройденную вершину в список закрытых
+        closed.append(current_node)
+
+        # Проверка, пришел ли поиск к искомому узлу
+        if current_node == goal_node:
+            print('Found goal')
+            path = []
+            while current_node != start_node:
+                # заполняем путь
+                print('Searching return')
+                path.append({"node": current_node.name, "duration": current_node.g})
+                current_node = current_node.parent
+            path.append({"node": start_node.name, "duration": start_node.g})
+            # Возвращаем обратно путь
+            return path[::-1]
+        print('Found neighbors')
+        # Ищем соседние узлы с рассматриваемым
+        neighbors = graph.get(current_node.name)
+        # Проверяем соседей
+        for key, value in neighbors.items():
+            # Создаем узел
+            neighbor = Node(key, current_node)
+            # Проверяем, не прошли ли мы данный узел
+            if neighbor in closed:
+                continue
+            # Вычисляем стоимость пути
+            neighbor.g = current_node.g + graph.get(current_node.name, neighbor.name)
+            neighbor.h = heuristics.get(neighbor.name)
+            neighbor.f = neighbor.g + neighbor.h
+            # Проверяем нет ли соседнего узла в списке открытых с меньшей ценой
+            if add_to_open(open, neighbor):
+                print('New neighbor in queue')
+                # Добавляем в очередь
+                open.append(neighbor)
+    # В случае отсутсвия пути возвращаем None
+    return None
+
+
+# Проверка соседнего узла
+def add_to_open(open, neighbor):
+    for node in open:
+        if neighbor == node and neighbor.f > node.f:
+            return False
+    return True
+
+
+# Оптимизированная версия А*
+# Не использует локальный объект графа, а обращается к бд
+def opt_astart(graph, heuristics, start, end):
     # Создаем списки открытых и закрытых вершин
     open = []
     closed = []
@@ -106,27 +171,27 @@ def astar_search(graph, heuristics, start, end):
             while current_node != start_node:
                 # заполняем путь
                 print('Searching return')
-                path.append(current_node.name + ': ' + str(current_node.g))
+                path.append({"node": current_node.name, "distance": current_node.g})
                 current_node = current_node.parent
             path.append(start_node.name + ': ' + str(start_node.g))
             # Возвращаем обратно путь
             return path[::-1]
-        print('Found neighbours')
+        print('Found neighbors')
         # Ищем соседние узлы с рассматриваемым
         neighbors = graph.get(current_node.name)
+        print('Neighbors', current_node.name, neighbors.items())
         # Проверяем соседей
         for key, value in neighbors.items():
             print('Investigating neighbor')
             # Создаем узел
             neighbor = Node(key, current_node)
             # Проверяем, не прошли ли мы данный узел
-            if (neighbor in closed):
+            if neighbor in closed:
                 continue
             # Вычисляем стоимость пути
             neighbor.g = current_node.g + graph.get(current_node.name, neighbor.name)
-            neighbor.h = heuristics.get(neighbor.name, 0)
+            neighbor.h = heuristics.get(neighbor.name)
             neighbor.f = neighbor.g + neighbor.h
-            # Check if neighbor is in open list and if it has a lower f value
             # Проверяем нет ли соседнего узла в списке открытых с меньшей ценой
             if add_to_open(open, neighbor):
                 print('New neighbor in queue')
@@ -134,11 +199,3 @@ def astar_search(graph, heuristics, start, end):
                 open.append(neighbor)
     # В случае отсутсвия пути возвращаем None
     return None
-
-
-# Проверка соседнего узла на
-def add_to_open(open, neighbor):
-    for node in open:
-        if neighbor == node and neighbor.f > node.f:
-            return False
-    return True

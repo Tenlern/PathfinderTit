@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import FastAPI, Body, Query
 from fastapi.responses import JSONResponse
 from models import Request
-from db import get_paths, heuristics_data, paths
+from db import heuristics_data, paths, get_heuristics, get_neighbors
 from pathfinder import Graph, astar_search
 
 app = FastAPI()
@@ -21,25 +21,33 @@ async def root():
 # Для его работы нужны данные путей и отдельная подборка дальности между городами в базе данных
 @app.get('/schedule/lazy')
 async def get_schedule(
-        # request: Request = Body(..., embed=True)
+        request: Request = Body(...)
 ):
     graph = Graph()
-    heuristics = {}
-
     for path in paths.find():
         graph.connect(path['from'], path['to'], path['duration'])
 
     print('Paths found')
 
-    for cost in heuristics_data.find():
-        heuristics.setdefault()
+    heuristics = heuristics_data.find_one({'name': request.arrival})['heuristics']
 
     print('Heuristics found')
 
-    path = astar_search(graph, heuristics, 'талин', 'санкт-петербург')
+    path = astar_search(graph, heuristics, request.departure, request.arrival)
 
-    return path
-
+    response = []
+    for i in range(len(path)-1):
+        path_data = paths.find_one(
+            {
+                "from": path[i]['node'],
+                "to": path[i+1]['node'],
+                "duration": path[i+1]['duration']-path[i]['duration']
+            }
+        )
+        path_data.pop("_id")
+        response.append(path_data)
+        print(response)
+    return {"data": response}
 
 
 # # Оптимимзированный A*
@@ -97,12 +105,9 @@ async def get_schedule(
 #         return None
 
 
-@app.get('/train/{train_id}')
-async def get_train(train_id: int = Query(None)):
-    if train_id is not None:
-        return {'id': train_id, 'text': 'success'}
-    else:
-        return {'error': 'Code'}
+@app.get('/heuristics')
+async def get_heu(train_id: int = Query(None)):
+    return get_neighbors('москва')
 
 
 @app.post('/train/{train_id}')

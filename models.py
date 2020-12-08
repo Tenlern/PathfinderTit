@@ -8,7 +8,7 @@ class Request(BaseModel):
         datetime.now(),
         alias='date',
         title='дата поездки',
-        # description='дата для поиска подходящих по дню рейсов'
+        description='дата для поиска подходящих по дню рейсов'
     )
     arrival: str = Field(
         None,
