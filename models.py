@@ -1,35 +1,58 @@
+from typing import List, Dict, Optional
 from pydantic import BaseModel, Field
 from datetime import datetime
 
 
-class Flight(BaseModel):
-    # from: String,
-    # to: String,
-    type: str = Field(
-        title='тип транспорта', max_length=255
+class Request(BaseModel):
+    date: datetime = Field(
+        datetime.now(),
+        alias='date',
+        title='дата поездки',
+        # description='дата для поиска подходящих по дню рейсов'
     )
-    departure: datetime
-    duration: int = F
-    arrival: datetime
-    seats: int
-    seats_free: int
-    price: int
+    arrival: str = Field(
+        None,
+        alias='arrival-city',
+        title='пункт прибытия',
+        description='строка с названием пункта прибытия',
+        max_length=255
+    )
+    departure: str = Field(
+        None,
+        alias='departure-city',
+        title='пункт прибытия',
+        description='строка с названием пункта прибытия',
+        max_length=255
+    )
 
 
-class Transport(BaseModel):
-    point_from: str = Field()
-    point_to: str = Field()
-    type: str = Field()
-    departure: datetime = Field()
-    arrival: datetime = Field()
-    duration: int = Field()
-    price: int = Field()
-
-class Response(BaseModel):
-    message: str
-    body: List[str]
-
-
-class Point(BaseModel):
-    name: str
-
+# class Path(BaseModel):
+#     point_from: str = Field(
+#         title='пункт отправления',
+#         max_length=255
+#     )
+#     point_to: str = Field(
+#         title='пункт назаначения',
+#         max_length=255
+#     )
+#     type: str = Field(
+#         title='тип транспорта',
+#         max_length=255
+#     )
+#     departure: datetime = Field(
+#         title='время отправления'
+#     )
+#     arrival: datetime = Field(
+#         title='время прибытия'
+#     )
+#     duration: int = Field(
+#         title='длительность'
+#     )
+#     price: int = Field(
+#         title='стоимость'
+#     )
+#
+#
+# class Response(BaseModel):
+#     message: str
+#     body: str
