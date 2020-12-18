@@ -3,8 +3,8 @@ import os
 from pathfinder import Graph
 from env import db
 
-client = MongoClient(f"mongodb+srv://{os.environ.get('MONGODB_USERNAMЕ')}:{os.environ.get('MONGODB_PASSWORD')}@{os.environ.get('MONGODB_CLUSTER_NAME')}.tghpe.mongodb.net/{os.environ.get('MONGODB_DB_NAME')}",
-                     retryWrites=True, w="majority", tlsAllowInvalidCertificates=True)
+client = MongoClient(f"mongodb+srv://{os.environ.get('MONGODB_USERNAMЕ')}:{os.environ.get('MONGODB_PASSWORD')}@intertrans.tghpe.mongodb.net/{os.environ.get('MONGODB_DB_NAME')})",
+                     retryWrites=True, w="majority")
 database = client[os.environ.get('MONGODB_DB_NAME')]
 paths = database['flights']
 heuristics_data = database['heuristics']
