@@ -1,12 +1,12 @@
 from pymongo import MongoClient
-# from models import Flight
+import os
 from pathfinder import Graph
 from env import db
 
-client = MongoClient("mongodb+srv://reader:G2vAQBNr1Qn3EG1A@cluster0.z7vr7.mongodb.net/pathfinder_tit",
+client = MongoClient(f"mongodb+srv://{os.environ.get('MONGODB_USERNAMЕ')}:{os.environ.get('MONGODB_PASSWORD')}@{os.environ.get('MONGODB_CLUSTER_NAME')}.tghpe.mongodb.net/{os.environ.get('MONGODB_DB_NAME')}",
                      retryWrites=True, w="majority", tlsAllowInvalidCertificates=True)
-database = client['pathfinder_tit']
-paths = database['paths_test']
+database = client[os.environ.get('MONGODB_DB_NAME')]
+paths = database['flights']
 heuristics_data = database['heuristics']
 
 

@@ -97,7 +97,7 @@ class Response(BaseModel):
         schema_extra = {
             "example": {
                 "message": "Nice!",
-                "body": "plain",
+                "type": "plain",
                 "path": [
                     {"from": "талин", "to": "рига", "duration": 2257, "price": 4090},
                     {"from": "рига", "to": "москва", "duration": 3487, "price": 8198}
