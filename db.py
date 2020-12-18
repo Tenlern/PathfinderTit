@@ -3,7 +3,7 @@ import os
 from pathfinder import Graph
 from env import db
 
-client = MongoClient(f"mongodb+srv://{os.environ.get('MONGODB_USERNAMЕ')}:{os.environ.get('MONGODB_PASSWORD')}@intertrans.tghpe.mongodb.net/{os.environ.get('MONGODB_DB_NAME')})",
+client = MongoClient(f"mongodb+srv://Heroku:mKU9xNohEpL62uVr@intertrans.tghpe.mongodb.net/schedule)",
                      retryWrites=True, w="majority")
 database = client[os.environ.get('MONGODB_DB_NAME')]
 paths = database['flights']
