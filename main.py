@@ -72,6 +72,9 @@ async def get_schedule(
 
     path = astar_search(graph, heuristics, request.departure, request.arrival)
 
+    if path is None:
+        return JSONResponse(status_code=404, content=dict(message="No path found", type=request.type))
+
     response = []
     for i in range(len(path)-1):
         path_data = paths.find_one(
@@ -83,7 +86,7 @@ async def get_schedule(
         )
         path_data.pop("_id")
         response.append(path_data)
-    return JSONResponse(status_code=200, content=response)
+    return response
 
 
 # Оптимизированный поиск при помощи Ant Colony TSP

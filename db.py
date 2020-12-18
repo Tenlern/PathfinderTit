@@ -4,8 +4,8 @@ from pathfinder import Graph
 from env import db
 
 client = MongoClient(f"mongodb+srv://Heroku:mKU9xNohEpL62uVr@intertrans.tghpe.mongodb.net/schedule)",
-                     retryWrites=True, w="majority")
-database = client[os.environ.get('MONGODB_DB_NAME')]
+                     retryWrites=True, w="majority", tlsAllowInvalidCertificates=True)
+database = client['schedule']
 paths = database['flights']
 heuristics_data = database['heuristics']
 
