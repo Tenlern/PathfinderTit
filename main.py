@@ -2,11 +2,19 @@ from typing import Optional
 
 from fastapi import FastAPI, Body, Query
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from models import Request, Response
 from db import heuristics_data, paths, get_heuristics, get_neighbors, make_graph
 from pathfinder import Graph, astar_search
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Обработчик вызова api по индексу
