@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/public", StaticFiles(directory="D:/git/intertrans/public/", html = True), name="public")
+app.mount("/public", StaticFiles(directory="public", html = True), name="public")
 
 # Обработчик вызова api по индексу
 @app.get('/')
