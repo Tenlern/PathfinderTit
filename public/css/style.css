@@ -1,0 +1,121 @@
+body {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12pt;
+  padding: 3px;
+}
+.title {
+  text-align: center;
+  font-size: 20pt;
+  font-weight: bold;
+}
+header {
+  display: flex;
+  flex-flow: column;
+}
+.header_element {
+  display: flex;
+  background: #fff;
+}
+.header_element > div {
+  display: flex;
+  padding: 5px 0 0 0;
+  width: 100%;
+}
+input {
+  font-size: inherit;
+}
+input[name='location'] {
+  width: 100%;
+}
+select {
+  width: 100%;
+  height: 2em;
+}
+button {
+  width: 100%;
+  height: 2em;
+  font-size: inherit;
+}
+label {
+  display: block;
+  float: right;
+  width: 100%;
+}
+.grid_head {
+  padding: 5px;
+  font-size: 14pt;
+  font-weight: bold;
+  background: #fff;
+}
+main {
+  display: grid;
+  grid-row-gap: 3px;
+  background: #ccc;
+  margin: 5px 0 0 0;
+}
+.row,
+.row_inter,
+.row_inter_title,
+.type,
+.price {
+  padding: 5px;
+  background: #fff;
+}
+.row_inter_title {
+  grid-column-start: 1;
+  grid-column-end: 6;
+}
+.row_inter {
+  margin: 0 0 0 30px;
+}
+@media (max-width: 580px) {
+  header {
+    grid-template-columns: repeat(1, auto);
+    grid-template-rows: repeat(3, auto);
+  }
+  .header_element {
+    flex-flow: column;
+  }
+  .header_element > div {
+    height: 3em;
+  }
+  select {
+    height: 3em;
+  }
+  button {
+    height: 3em;
+  }
+  main {
+    grid-template-columns: repeat(3, auto);
+  }
+  .grid_head {
+    display: none;
+  }
+  .type {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    margin: 0.7em 0 0 0;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 14pt;
+  }
+  .price {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    text-align: center;
+  }
+}
+@media (min-width: 581px) {
+  header {
+    grid-template-columns: repeat(2, auto);
+  }
+  .header_element > div {
+    height: 2em;
+    padding: 5px 5px 0 0;
+  }
+  main {
+    grid-template-columns: repeat(5, auto);
+  }
+}
