@@ -100,7 +100,7 @@ async def get_schedule(
 
 
 # Тот же метод, что и выше, с двойным выводом
-@app.get('/schedule/lazy/double')
+@app.post('/schedule/lazy/double')
 async def get_schedule(
         request: Request = Body(...)
 ):
