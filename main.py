@@ -128,14 +128,15 @@ async def get_schedule(
         )
         path_data.pop("_id")
         response[0].append(path_data)
-    direct = paths.find_one({
-        "from": request.departure,
-        "to": request.arrival,
-        # "type": request.type
-    })
-    if direct is not None:
-        direct.pop("_id")
-    response.append(direct)
+    if path.count > 0:
+        direct = paths.find_one({
+            "from": request.departure,
+            "to": request.arrival,
+            # "type": request.type
+        })
+        if direct is not None:
+            direct.pop("_id")
+            response.append(direct)
     return response
 
 
