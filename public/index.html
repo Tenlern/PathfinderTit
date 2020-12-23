@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Intertrans</title>
+    <link href="css/style.css" rel="stylesheet" />
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <header>
+      <div class="header_element, title">Intertrans</div>
+      <div class="header_element">
+        <div>
+          <input type="search" name="location" placeholder="Откуда" id="from" />
+        </div>
+        <div>
+          <input type="search" name="location" placeholder="Куда" id="to" />
+        </div>
+        <div><input type="date" name="location" id="departure" /></div>
+      </div>
+      <div class="header_element">
+        <div>Вид транспорта:</div>
+        <div>
+          <input type="checkbox" name="transport" id="plane" checked /><label for="plane">Самолёт</label>
+        </div>
+        <div>
+          <input type="checkbox" name="transport" id="train" checked /><label for="train">Поезд</label>
+        </div>
+        <div>
+          <input type="checkbox" name="transport" id="bus" checked /><label for="bus">Автобус</label>
+        </div>
+      </div>
+      <div class="header_element">
+        <div>Приоритет:</div>
+        <select name="priority">
+          <option value="departure">Время отправления</option>
+          <option value="arrival">Время прибытия</option>
+          <option value="price">Цена</option>
+          <option value="duration">Время в пути</option>
+        </select>
+      </div>
+      <div>
+        <button id="search_button">Поиск</button>
+      </div>
+    </header>
+    <main></main>
+    <script src="js/client.js"></script>
+  </body>
+</html>

@@ -3,6 +3,7 @@ from typing import Optional
 from fastapi import FastAPI, Body, Query
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from models import Request, Response
 from db import heuristics_data, paths, get_heuristics, get_neighbors, make_graph
 from pathfinder import Graph, astar_search
@@ -16,6 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/public", StaticFiles(directory="public", html = True), name="public")
 
 # Обработчик вызова api по индексу
 @app.get('/')
@@ -64,7 +66,7 @@ async def get_schedule(
 
 
 # Тот же метод, что и выше, только с другим форматом вывода
-@app.get('/schedule/lazy/plain')
+@app.post('/schedule/lazy/plain')
 async def get_schedule(
         request: Request = Body(...)
 ):
@@ -98,7 +100,7 @@ async def get_schedule(
 
 
 # Тот же метод, что и выше, с двойным выводом
-@app.get('/schedule/lazy/double')
+@app.post('/schedule/lazy/double')
 async def get_schedule(
         request: Request = Body(...)
 ):
